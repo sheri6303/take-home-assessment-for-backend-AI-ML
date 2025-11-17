@@ -66,7 +66,9 @@ class CacheService {
 
   getStats() {
     const totalRequests = this.stats.hits + this.stats.misses;
-    const hitRate = totalRequests > 0 ? (this.stats.hits / totalRequests * 100).toFixed(2) : 0;
+    const hitRate = totalRequests > 0 
+      ? (this.stats.hits / totalRequests * 100).toFixed(2) 
+      : 0;
     
     return {
       size: this.cache.size,

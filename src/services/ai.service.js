@@ -124,7 +124,7 @@ class OpenAIService {
   async chatCompletion(messages, model = AI_MODELS.GPT_3_5_TURBO) {
     await this.ensureInitialized();
 
-    // Check cache first (include model in cache key to avoid cross-model cache hits)
+    // Include model in cache key so different models don't share cache
     const cacheKey = `chat:${model}:${hash(JSON.stringify(messages))}`;
     const cached = cacheService.get(cacheKey);
     if (cached) {
@@ -139,8 +139,6 @@ class OpenAIService {
     });
 
     const result = response.choices[0]?.message?.content || 'No response generated';
-    
-    // Cache the result for 5 minutes
     cacheService.set(cacheKey, result, 5 * 60 * 1000);
     
     return result;

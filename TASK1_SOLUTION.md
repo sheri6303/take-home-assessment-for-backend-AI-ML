@@ -1,23 +1,26 @@
-# Task 1: Cache Statistics Endpoint - Solution
+# Task 1: Cache Statistics Endpoint
 
-## Overview
+Added a new endpoint to expose cache statistics. Pretty straightforward - just needed to track hits/misses and expose the data.
 
-Implemented a cache statistics endpoint that returns cache metrics including size, TTL, and hit/miss tracking.
+## What Changed
 
-## Implementation
+### Cache Service (`src/services/cache.service.js`)
 
-### 1. Enhanced Cache Service (`src/services/cache.service.js`)
+Added hit/miss tracking to the existing cache service. The `size()` method was already there, so I just extended it with stats tracking.
 
-- Added `stats` object to track hits/misses in constructor
-- Updated `get()` method to increment hits/misses counters
-- Added `getStats()` method returning:
-  - `size`: Current cache entries
-  - `defaultTTL`: TTL in milliseconds
-  - `defaultTTLSeconds`: TTL in seconds
-  - `hits`, `misses`, `totalRequests`: Request statistics
-  - `hitRate`: Hit rate percentage
+- Added a `stats` object in the constructor to keep track of hits and misses
+- Modified `get()` to increment counters when cache is hit or missed
+- Created `getStats()` method that returns useful metrics:
+  - Current cache size
+  - Default TTL (both ms and seconds for convenience)
+  - Hit/miss counts and total requests
+  - Hit rate percentage
 
-### 2. Created Cache Controller (`src/controllers/cache.controller.js`)
+The `getStats()` method uses the existing `size()` method, so no breaking changes.
+
+### Cache Controller (`src/controllers/cache.controller.js`)
+
+Simple controller that calls the service and returns the stats:
 
 ```javascript
 export const cacheController = {
@@ -28,28 +31,21 @@ export const cacheController = {
 };
 ```
 
-### 3. Created Cache Routes (`src/routes/cache.routes.js`)
+### Routes (`src/routes/cache.routes.js`)
+
+Standard route setup:
 
 ```javascript
 router.get('/stats', cacheController.getStats);
 ```
 
-### 4. Registered Routes (`src/routes/index.js`)
+Registered it in `src/routes/index.js` under `/cache`.
 
-```javascript
-router.use('/cache', cacheRoutes);
-```
-
-## Files Changed
-
-- **Modified:** `src/services/cache.service.js`, `src/routes/index.js`
-- **Created:** `src/controllers/cache.controller.js`, `src/routes/cache.routes.js`
-
-## API Endpoint
+## API
 
 **GET** `/api/cache/stats`
 
-**Response:**
+Returns something like:
 ```json
 {
   "success": true,
@@ -74,9 +70,8 @@ npm run dev
 curl http://localhost:3000/api/cache/stats
 ```
 
-## Implementation Notes
+## Notes
 
-- ✅ **JavaScript Project**: All files use `.js` extension (not `.ts`)
-- ✅ **CacheService.size()**: Existing `size()` method preserved; `getStats()` extends functionality using `this.cache.size`
-- ✅ **Architecture Patterns**: Follows established patterns with separate controllers (`cache.controller.js`), routes (`cache.routes.js`), and singleton service (`cacheService`)
-
+- All files are JavaScript (.js), not TypeScript
+- Used the existing `size()` method - just added stats on top
+- Follows the same pattern as other controllers/routes/services in the project
