@@ -1,0 +1,14 @@
+/node_modules
+/dist
+/build
+/dist.zip
+/dist.tar.gz
+/dist.tar.bz2
+/dist.tar.xz
+/dist.tar.lzma
+/dist.tar.lz
+/dist.tar.lzo
+/dist.tar.lrz
+/dist.tar.lzip
+/dist.tar.lha
+/dist.tar.lhz

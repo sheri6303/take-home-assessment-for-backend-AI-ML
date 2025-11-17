@@ -1,5 +1,6 @@
 export { errorHandler } from './errorHandler.js';
 export { rateLimitMiddleware } from './rateLimiter.js';
+export { requestIdMiddleware } from './requestId.js';
 export { requestLogger } from './requestLogger.js';
 export { asyncHandler } from './asyncHandler.js';
 export { authMiddleware, optionalAuth, adminOnly } from './auth.js';
